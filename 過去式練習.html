@@ -1,0 +1,425 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>過去式練習</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: one narrow reading column, sticky 3-tab bar (速查 / 練習 / 小考); highlighter-yellow marks the time signals and key words */
+:root{
+  --bg:#F2F5F9; --surface:#FFFFFF; --ink:#16213B; --muted:#5B6780; --line:#D9E0EC;
+  --accent:#2D5BE3; --accent-ink:#FFFFFF; --soft:#E8EEFB;
+  --mark:rgba(255,216,77,.6);
+  --ok:#14804A; --ok-bg:#E3F5EA; --bad:#B4302B; --bad-bg:#FCE9E7;
+  --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --font-display:"Bricolage Grotesque","Noto Sans TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1626; --surface:#18213A; --ink:#E8EDF8; --muted:#9AA7C2; --line:#2B3856;
+  --accent:#7FA2FF; --accent-ink:#0F1626; --soft:#1E2B4D; --mark:rgba(232,194,58,.3);
+  --ok:#5BD08F; --ok-bg:#123325; --bad:#FF8B84; --bad-bg:#3A1B1E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1626; --surface:#18213A; --ink:#E8EDF8; --muted:#9AA7C2; --line:#2B3856;
+  --accent:#7FA2FF; --accent-ink:#0F1626; --soft:#1E2B4D; --mark:rgba(232,194,58,.3);
+  --ok:#5BD08F; --ok-bg:#123325; --bad:#FF8B84; --bad-bg:#3A1B1E; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:760px;margin:0 auto}
+mark{background:linear-gradient(transparent 45%,var(--mark) 45%);color:inherit;padding:0 2px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.25;text-wrap:balance;margin:0}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+header{padding:28px 0 16px}
+header .kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+header h1{font-size:clamp(30px,7vw,42px);margin-top:4px}
+header p{margin:8px 0 0;color:var(--muted);max-width:52ch}
+
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0;display:flex;gap:8px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav button{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 8px;cursor:pointer;font-weight:500}
+nav button small{display:block;font-size:12px;color:var(--muted);font-weight:400;line-height:1.3}
+nav button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+nav button[aria-selected="true"] small{color:inherit;opacity:.85}
+
+section.tab{padding-top:20px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.card h2{font-size:21px;margin-bottom:10px}
+.card h3{font-size:16px;margin:14px 0 6px}
+.card p{margin:6px 0}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{background:var(--soft);border-radius:999px;padding:2px 12px;font-size:15px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:13px}
+.verbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.verbs div{background:var(--soft);border-radius:8px;padding:6px 10px;font-size:15px}
+.verbs b{font-weight:700}
+.formula{display:grid;gap:8px}
+.formula div{background:var(--soft);border-radius:8px;padding:8px 12px}
+.formula small{display:block;color:var(--muted)}
+.cta{align-self:flex-start}
+
+.btn{border:0;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:10px 20px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.meta{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.tag{background:var(--soft);color:var(--ink);border-radius:6px;padding:1px 8px;font-size:13px}
+.q{font-size:19px;margin:12px 0;line-height:1.9}
+.qtext{margin:0}
+.base{display:inline-block;background:var(--soft);border-radius:6px;padding:0 8px;font-size:15px;margin-left:4px;color:var(--muted)}
+.think{border-left:4px solid var(--accent);background:var(--soft);border-radius:0 8px 8px 0;padding:8px 12px;margin:12px 0;font-size:15px}
+.think b{font-size:13px;letter-spacing:.08em;color:var(--accent);display:block}
+.opts{display:grid;gap:8px;margin:12px 0}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;background:var(--surface)}
+.opt input{margin-top:6px;accent-color:var(--accent)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--soft)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.locked{cursor:default}
+.blank,.full{border:0;border-bottom:2px solid var(--accent);background:var(--soft);border-radius:6px 6px 0 0;padding:2px 8px;font-size:18px;min-width:7ch;width:9ch;text-align:center}
+.full{width:100%;text-align:left;margin-top:8px;border-radius:8px;border:1.5px solid var(--line);padding:8px 12px}
+.blank:disabled,.full:disabled{opacity:1}
+.blank.ok,.full.ok{border-color:var(--ok);background:var(--ok-bg)}
+.blank.bad,.full.bad{border-color:var(--bad);background:var(--bad-bg)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.fb{border-radius:10px;padding:12px 14px;margin-top:14px;font-size:15px}
+.fb.ok{background:var(--ok-bg)} .fb.bad{background:var(--bad-bg)}
+.fb .v{font-weight:700;font-size:16px}
+.fb.ok .v{color:var(--ok)} .fb.bad .v{color:var(--bad)}
+.fb p{margin:4px 0}
+
+.sec-title{font-size:18px;margin-top:8px}
+.score{font-family:var(--font-display);font-size:56px;line-height:1}
+.score small{font-size:20px;color:var(--muted);font-weight:400}
+.qcard{position:relative}
+.qcard .num{font-family:var(--font-display);font-weight:700;color:var(--accent);margin-right:6px}
+.qcard.ok{border-color:var(--ok)} .qcard.bad{border-color:var(--bad)}
+.warn{color:var(--bad);font-size:15px;margin:8px 0 0}
+.review-list{margin:8px 0 0;padding-left:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Junior High English</div>
+    <h1>過去式練習</h1>
+    <p>先看速查表，再用「練習」一題一題想清楚，最後用「小考」檢查自己是不是真的學會了。</p>
+  </header>
+
+  <nav role="tablist" aria-label="分頁">
+    <button role="tab" data-tab="rules" aria-selected="true">速查表<small>先看重點</small></button>
+    <button role="tab" data-tab="practice" aria-selected="false">練習<small>15 題・逐題講解</small></button>
+    <button role="tab" data-tab="quiz" aria-selected="false">小考<small>20 題・交卷對答案</small></button>
+  </nav>
+
+  <!-- 速查表 -->
+  <section class="tab" id="tab-rules">
+    <div class="card">
+      <h2>什麼時候用過去式？</h2>
+      <p>描述<mark>已經結束</mark>的事情或狀態，句子裡常有表示過去的時間詞：</p>
+      <div class="chips">
+        <span class="chip">yesterday</span><span class="chip">last night</span><span class="chip">last weekend</span>
+        <span class="chip">two days ago</span><span class="chip">in 2020</span><span class="chip">when I was a child</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>規則動詞：加 -ed 的四種拼法</h2>
+      <div class="tablewrap"><table>
+        <tr><th>動詞結尾</th><th>怎麼變</th><th>例子</th></tr>
+        <tr><td>一般動詞</td><td>直接加 <b>-ed</b></td><td>work → worked<br>play → played<br>watch → watched</td></tr>
+        <tr><td>e 結尾</td><td>只加 <b>-d</b></td><td>live → lived<br>dance → danced</td></tr>
+        <tr><td>子音＋y</td><td>y 改 i 再加 <b>-ed</b></td><td>study → studied<br>cry → cried<br><span class="muted">（母音＋y 不改：play → played）</span></td></tr>
+        <tr><td>短母音＋單子音</td><td>重複字尾再加 <b>-ed</b></td><td>stop → stopped<br>plan → planned</td></tr>
+      </table></div>
+      <h3>發音</h3>
+      <p>worked /t/、played /d/、wanted /ɪd/（t 或 d 結尾的動詞，-ed 多一個音節）。</p>
+    </div>
+
+    <div class="card">
+      <h2>常見不規則動詞</h2>
+      <p class="muted">沒有規則，必須背。</p>
+      <div class="verbs">
+        <div>am / is → <b>was</b></div><div>are → <b>were</b></div>
+        <div>go → <b>went</b></div><div>have → <b>had</b></div>
+        <div>see → <b>saw</b></div><div>eat → <b>ate</b></div>
+        <div>buy → <b>bought</b></div><div>take → <b>took</b></div>
+        <div>make → <b>made</b></div><div>come → <b>came</b></div>
+        <div>write → <b>wrote</b></div><div>run → <b>ran</b></div>
+        <div>give → <b>gave</b></div><div>get → <b>got</b></div>
+        <div>drink → <b>drank</b></div><div>meet → <b>met</b></div>
+        <div>say → <b>said</b></div><div>think → <b>thought</b></div>
+        <div>teach → <b>taught</b></div><div>sit → <b>sat</b></div>
+        <div>lose → <b>lost</b></div><div>ride → <b>rode</b></div>
+        <div>read → <b>read</b> /rɛd/</div><div>cut → <b>cut</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>否定句與疑問句</h2>
+      <div class="formula">
+        <div>肯定：S ＋ 動詞過去式<small>She watched TV last night.</small></div>
+        <div>否定：S ＋ <b>didn't</b> ＋ <mark>動詞原形</mark><small>She didn't watch TV last night.</small></div>
+        <div>疑問：<b>Did</b> ＋ S ＋ <mark>動詞原形</mark> …?<small>Did she watch TV last night? — Yes, she did. / No, she didn't.</small></div>
+        <div>be 動詞：不用 did<small>She wasn't at home. / Were you at home?</small></div>
+      </div>
+      <p>重點：句子裡已經有 <b>did</b>，後面的動詞就要<mark>變回原形</mark>。</p>
+    </div>
+    <button class="btn cta" data-go="practice">開始練習</button>
+  </section>
+
+  <!-- 練習 -->
+  <section class="tab" id="tab-practice" hidden></section>
+
+  <!-- 小考 -->
+  <section class="tab" id="tab-quiz" hidden></section>
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+/* ---------- 答案比對 ---------- */
+function norm(s){
+  return String(s).toLowerCase().replace(/[‘’]/g,"'")
+    .replace(/\bdid not\b/g,"didn't").replace(/\bwas not\b/g,"wasn't").replace(/\bwere not\b/g,"weren't")
+    .replace(/[.!?]+\s*$/,"").replace(/\s+/g," ").trim();
+}
+function isRight(item,val){
+  if(item.type==="mc") return Number(val)===item.a;
+  var v=norm(val);
+  return item.ans.some(function(a){return norm(a)===v});
+}
+function answerText(item){
+  return item.type==="mc" ? String.fromCharCode(65+item.a)+". "+item.opts[item.a] : item.ans[0];
+}
+
+/* ---------- 題庫：練習 ---------- */
+var PRACTICE=[
+ {tag:"規則動詞",type:"mc",q:"We ___ basketball after school <mark>yesterday</mark>.",opts:["play","played","plays","playing"],a:1,
+  think:"看到 yesterday，時間是過去還是現在？動詞要用哪一種形態？",
+  why:"yesterday 表示過去，動詞用過去式。play 的結尾是「母音＋y」，直接加 -ed → played。"},
+ {tag:"規則動詞",type:"mc",q:"My grandma ___ in Kaohsiung <mark>ten years ago</mark>.",opts:["live","lives","lived","living"],a:2,
+  think:"ago 是過去的訊號。live 已經是 e 結尾，加 -ed 時會怎麼處理？",
+  why:"e 結尾的動詞只加 -d：live → lived。"},
+ {tag:"拼法：子音＋y",type:"fill",q:"Tom ___ <span class=\"base\">study</span> English <mark>last night</mark>.",ans:["studied"],
+  think:"study 的結尾是 u-d-y。y 前面是母音還是子音？",
+  why:"study 結尾是「子音 d ＋ y」，要把 y 改成 i 再加 -ed → studied。"},
+ {tag:"拼法：重複字尾",type:"fill",q:"The bus ___ <span class=\"base\">stop</span> in front of the school <mark>this morning</mark>, and we got off.",ans:["stopped"],
+  think:"stop 是 s-t-o-p：短母音 o ＋ 單一子音 p，而且重音在最後一個音節。",
+  why:"「短母音＋單子音」結尾要重複字尾再加 -ed → stopped。（句中 got off 也是過去式，表示這件事已經結束。）"},
+ {tag:"不規則動詞",type:"fill",q:"Last Sunday, we ___ <span class=\"base\">go</span> to the night market.",ans:["went"],
+  think:"go 是不規則動詞，不能加 -ed。還記得速查表上它變成什麼嗎？",
+  why:"go → went。不規則動詞沒有規則，要直接背。"},
+ {tag:"不規則動詞",type:"mc",q:"I ___ a great movie <mark>last night</mark>.",opts:["see","saw","seen","seeing"],a:1,
+  think:"last night 是過去。see 的過去式是哪一個？",
+  why:"see → saw。seen 是過去分詞，之後學完成式才會用到，現在先不要選。"},
+ {tag:"不規則動詞",type:"fill",q:"She ___ <span class=\"base\">have</span> a big breakfast <mark>yesterday morning</mark>.",ans:["had"],
+  think:"have 是不規則動詞，過去式不是 haved。",
+  why:"have → had。"},
+ {tag:"be 動詞",type:"mc",q:"My brothers ___ at the library <mark>yesterday afternoon</mark>.",opts:["was","were","are","did"],a:1,
+  think:"主詞 My brothers 是單數還是複數？be 動詞過去式有 was 和 were 兩種。",
+  why:"主詞是複數 brothers，過去式用 were。be 動詞的句子不需要 did。"},
+ {tag:"be 動詞",type:"fill",q:"I ___ <span class=\"base\">be</span> very tired <mark>last night</mark>.",ans:["was"],
+  think:"主詞是 I，現在式用 am。am 的過去式是什麼？",
+  why:"I 搭配 was（am / is → was；are → were）。"},
+ {tag:"否定句",type:"mc",q:"He didn't ___ breakfast <mark>this morning</mark>.",opts:["eat","ate","eaten","eats"],a:0,
+  think:"句子裡已經有 didn't，它已經負責表示「過去」了。後面的動詞還需要再變嗎？",
+  why:"did / didn't 後面的動詞一律用原形：didn't eat。"},
+ {tag:"否定句",type:"rewrite",q:"She watched TV last night.",instr:"改成否定句：",ans:["She didn't watch TV last night."],
+  think:"先放 didn't，再把 watched 還原成原形。",
+  why:"肯定句的 watched → 否定句 didn't ＋ watch（動詞回到原形）。寫成 did not watch 也正確。"},
+ {tag:"疑問句",type:"mc",q:"___ Amy ___ to the park <mark>last Saturday</mark>?",opts:["Did / go","Did / went","Does / went","Was / go"],a:0,
+  think:"問過去發生的事，句首用哪一個助動詞？它後面的動詞又是什麼形態？",
+  why:"Did ＋ 主詞 ＋ 動詞原形：Did Amy go to the park last Saturday?"},
+ {tag:"疑問句",type:"rewrite",q:"Tom cleaned his room yesterday.",instr:"改成疑問句：",ans:["Did Tom clean his room yesterday?"],
+  think:"把 Did 放在句首，cleaned 要還原。",
+  why:"Did ＋ Tom ＋ clean ＋ his room yesterday?（句尾記得加問號）"},
+ {tag:"改錯",type:"mc",q:"哪一句是<b>正確</b>的句子？",opts:["He didn't went to school yesterday.","He didn't go to school yesterday.","He not go to school yesterday.","He doesn't went to school yesterday."],a:1,
+  think:"逐句檢查：否定助動詞用對了嗎？後面的動詞是原形嗎？",
+  why:"A 錯在 didn't 後面又用了過去式 went；C 缺少助動詞；D 的 doesn't 是現在式，與 yesterday 衝突。"},
+ {tag:"中翻英",type:"mc",q:"「我<b>昨天</b>讀了一本有趣的書。」哪一句最恰當？",opts:["I read an interesting book yesterday.","I reads an interesting book yesterday.","I am read an interesting book yesterday.","I readed an interesting book yesterday."],a:0,
+  think:"read 是少數「寫法不變、發音改變」的不規則動詞。",
+  why:"read 的過去式寫法還是 read，但發音變成 /rɛd/。沒有 readed 這種字。"}
+];
+
+/* ---------- 題庫：小考 ---------- */
+var QUIZ=[
+ {sec:"一、選擇題",type:"mc",q:"My father ___ me a new bike <mark>last month</mark>.",opts:["buy","bought","buyed","buys"],a:1,why:"buy 是不規則動詞，過去式是 bought。"},
+ {type:"mc",q:"Lily ___ her teeth before bed <mark>last night</mark>.",opts:["brush","brushed","brushes","brushing"],a:1,why:"last night 表示過去，brush 加 -ed → brushed（sh 結尾直接加 -ed）。"},
+ {type:"mc",q:"It ___ rainy and cold <mark>last weekend</mark>.",opts:["is","were","was","be"],a:2,why:"主詞 It 是單數，be 動詞過去式用 was。"},
+ {type:"mc",q:"I ___ my keys, so I couldn't open the door.",opts:["lose","lost","losted","loses"],a:1,why:"lose → lost。從 couldn't（could 的過去式）也能看出整句在說過去的事。"},
+ {type:"mc",q:"Peter ___ do his homework <mark>last night</mark>.",opts:["didn't","doesn't","wasn't","not"],a:0,why:"do 是一般動詞，過去式否定用 didn't ＋ 原形。wasn't 只能搭配 be 動詞，doesn't 是現在式。"},
+ {type:"mc",q:"___ you at home <mark>last night</mark>?",opts:["Did","Do","Were","Are"],a:2,why:"句中沒有一般動詞，只有 at home（地點），所以是 be 動詞疑問句，主詞 you 搭配 Were。"},
+ {type:"mc",q:"Ken ___ his bike to school <mark>yesterday</mark>.",opts:["ride","rode","rided","rides"],a:1,why:"ride → rode（不規則）。"},
+ {type:"mc",q:"哪一句是<b>正確</b>的句子？",opts:["Did you saw Tom yesterday?","Did you see Tom yesterday?","Do you saw Tom yesterday?","Were you see Tom yesterday?"],a:1,why:"Did 後面要接動詞原形 see。A 的 saw、C 的 Do ＋ saw、D 的 Were ＋ see 都不正確。"},
+
+ {sec:"二、填空題（填入括號動詞的正確形態）",type:"fill",q:"My mom ___ <span class=\"base\">wash</span> the dishes after dinner <mark>last night</mark>.",ans:["washed"],why:"規則動詞，直接加 -ed → washed。"},
+ {type:"fill",q:"The baby ___ <span class=\"base\">cry</span> all night <mark>yesterday</mark>.",ans:["cried"],why:"cry 是「子音 r ＋ y」結尾，y 改 i 再加 -ed → cried。"},
+ {type:"fill",q:"We ___ <span class=\"base\">plan</span> a trip to Tainan <mark>last month</mark>.",ans:["planned"],why:"plan 是「短母音 a ＋ 單子音 n」結尾，重複字尾再加 -ed → planned。"},
+ {type:"fill",q:"Jason ___ <span class=\"base\">take</span> many photos at the zoo <mark>last Sunday</mark>.",ans:["took"],why:"take → took（不規則）。"},
+ {type:"fill",q:"She ___ <span class=\"base\">write</span> a letter to her grandma <mark>two days ago</mark>.",ans:["wrote"],why:"write → wrote（不規則）。"},
+ {type:"fill",q:"We ___ <span class=\"base\">be</span> so happy at the party <mark>last night</mark>.",ans:["were"],why:"主詞 We 是複數，be 動詞過去式用 were。"},
+ {type:"fill",q:"I ___ <span class=\"base\">drink</span> two glasses of milk <mark>yesterday morning</mark>.",ans:["drank"],why:"drink → drank（不規則）。"},
+ {type:"fill",q:"<mark>Last summer</mark>, my family ___ <span class=\"base\">visit</span> Japan.",ans:["visited"],why:"visit 是規則動詞，直接加 -ed → visited。"},
+
+ {sec:"三、句型改寫",type:"rewrite",instr:"改成否定句：",q:"Mary came to school late yesterday.",ans:["Mary didn't come to school late yesterday."],why:"didn't ＋ 動詞原形：came 要還原成 come。寫成 did not come 也正確。"},
+ {type:"rewrite",instr:"改成疑問句：",q:"They ate dinner at 7:00 last night.",ans:["Did they eat dinner at 7:00 last night?"],why:"Did ＋ 主詞 ＋ 動詞原形：ate 還原成 eat，句尾加問號。"},
+
+ {sec:"四、短文填空（同一個故事的兩句話）",type:"fill",q:"<mark>Last Saturday</mark>, Amy ___ <span class=\"base\">get</span> up at six and went to the park.",ans:["got"],why:"get → got（不規則）。後面的 went 也是過去式，可以幫你確認整段故事發生在過去。"},
+ {type:"fill",q:"At the park, she ___ <span class=\"base\">meet</span> her classmate, Leo.",ans:["met"],why:"meet → met（不規則）。"}
+];
+
+/* ---------- 共用：題目輸入區 ---------- */
+function inputHTML(item,name){
+  if(item.type==="mc"){
+    return '<div class="opts">'+item.opts.map(function(o,i){
+      return '<label class="opt"><input type="radio" name="'+name+'" value="'+i+'"><span><b>'+String.fromCharCode(65+i)+'.</b> '+o+'</span></label>';
+    }).join("")+'</div>';
+  }
+  var field='<input id="'+name+'" class="'+(item.type==="rewrite"?"full":"blank")+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="你的答案">';
+  if(item.type==="fill") return '<p class="q">'+item.q.replace("___",field)+'</p>';
+  return '<p class="q qtext">'+item.instr+'<br><b>'+item.q+'</b></p>'+field;
+}
+function qLead(item){ // mc 與 rewrite 的題幹
+  return item.type==="mc" ? '<p class="q">'+item.q.replace("___",'<b>＿＿＿</b>').replace("___",'<b>＿＿＿</b>')+'</p>' : "";
+}
+function getVal(item,name){
+  if(item.type==="mc"){var c=$('input[name="'+name+'"]:checked'); return c?c.value:"";}
+  var el=document.getElementById(name); return el?el.value:"";
+}
+function lockAndMark(item,name,right,chosen){
+  if(item.type==="mc"){
+    $$('input[name="'+name+'"]').forEach(function(inp){
+      inp.disabled=true;
+      var lab=inp.closest(".opt"); lab.classList.add("locked");
+      if(Number(inp.value)===item.a) lab.classList.add("ok");
+      else if(String(chosen)===inp.value) lab.classList.add("bad");
+    });
+  }else{
+    var el=document.getElementById(name); el.disabled=true; el.classList.add(right?"ok":"bad");
+  }
+}
+function fbHTML(item,right,blank){
+  var head=right?"答對了！":(blank?"沒有作答":"再想想看");
+  return '<div class="fb '+(right?"ok":"bad")+'"><p class="v">'+head+'</p>'+
+    (right?"":'<p>正確答案：<b>'+answerText(item)+'</b></p>')+
+    '<p><b>解析：</b>'+item.why+'</p></div>';
+}
+
+/* ---------- 速查表 / 分頁 ---------- */
+var tabs=["rules","practice","quiz"];
+function show(t){
+  if(tabs.indexOf(t)<0) t="rules";
+  tabs.forEach(function(k){
+    $("#tab-"+k).hidden=(k!==t);
+    var b=$('nav [data-tab="'+k+'"]'); b.setAttribute("aria-selected",k===t?"true":"false");
+  });
+  try{history.replaceState(null,"","#"+t)}catch(e){}
+  window.scrollTo(0,0);
+}
+$$("nav [data-tab]").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.tab)})});
+$$("[data-go]").forEach(function(b){b.addEventListener("click",function(){show(b.dataset.go)})});
+
+/* ---------- 練習（逐題） ---------- */
+var P={i:0,done:false,score:0,wrong:[]};
+function renderPractice(){
+  var root=$("#tab-practice");
+  if(P.i>=PRACTICE.length){
+    var n=PRACTICE.length;
+    root.innerHTML='<div class="card"><h2>練習完成</h2><div class="score">'+P.score+'<small> / '+n+'</small></div>'+
+      '<p class="muted">第一次作答就答對的題數。</p>'+
+      (P.wrong.length?'<h3>需要再看一次的題目</h3><ul class="review-list">'+P.wrong.map(function(k){
+        return '<li><b>'+PRACTICE[k].tag+'</b>：'+PRACTICE[k].why+'</li>';}).join("")+'</ul>':'<p>全部答對，可以去挑戰小考了！</p>')+
+      '<div class="actions"><button class="btn" id="goquiz">去做小考</button><button class="btn ghost" id="redo">重新練習</button></div></div>';
+    $("#goquiz").onclick=function(){show("quiz")};
+    $("#redo").onclick=function(){P={i:0,done:false,score:0,wrong:[]};renderPractice();window.scrollTo(0,0)};
+    return;
+  }
+  var it=PRACTICE[P.i], pct=Math.round(P.i/PRACTICE.length*100);
+  root.innerHTML='<div class="card">'+
+    '<div class="meta"><span>第 '+(P.i+1)+' / '+PRACTICE.length+' 題</span><span class="tag">'+it.tag+'</span></div>'+
+    '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div>'+
+    qLead(it)+
+    '<div class="think"><b>先想一想</b>'+it.think+'</div>'+
+    inputHTML(it,"pa")+
+    '<div id="pfb"></div>'+
+    '<div class="actions"><button class="btn" id="pcheck">檢查答案</button></div></div>';
+  P.done=false;
+  var check=$("#pcheck");
+  function doCheck(){
+    var val=getVal(it,"pa");
+    if(!String(val).trim()){ $("#pfb").innerHTML='<p class="warn">請先作答再檢查。</p>'; return; }
+    var right=isRight(it,val);
+    lockAndMark(it,"pa",right,val);
+    if(right) P.score++; else P.wrong.push(P.i);
+    $("#pfb").innerHTML=fbHTML(it,right,false);
+    var last=P.i===PRACTICE.length-1;
+    check.outerHTML='<button class="btn" id="pnext">'+(last?"看結果":"下一題")+'</button>';
+    var nx=$("#pnext"); nx.focus();
+    nx.onclick=function(){P.i++;renderPractice();window.scrollTo(0,0)};
+    P.done=true;
+  }
+  check.onclick=doCheck;
+  var f=document.getElementById("pa");
+  if(f) f.addEventListener("keydown",function(e){if(e.key==="Enter"&&!P.done)doCheck()});
+}
+renderPractice();
+
+/* ---------- 小考（一次完成） ---------- */
+var Q={submitted:false,warned:false};
+function renderQuiz(){
+  var root=$("#tab-quiz"), html='<div class="card" id="qintro"><h2>小考</h2><p>共 '+QUIZ.length+' 題，每題 5 分，滿分 100。全部寫完後按「交卷」，才會看到分數與每題解析。</p></div>';
+  QUIZ.forEach(function(it,i){
+    if(it.sec) html+='<h2 class="sec-title">'+it.sec+'</h2>';
+    html+='<div class="card qcard" id="qc'+i+'"><div class="meta"><span><span class="num">'+(i+1)+'</span></span></div>'+
+      qLead(it)+inputHTML(it,"q"+i)+'<div class="rv"></div></div>';
+  });
+  html+='<div class="card"><div class="actions"><button class="btn" id="qsubmit">交卷</button></div><div id="qmsg"></div></div>';
+  root.innerHTML=html;
+  Q.submitted=false;Q.warned=false;
+  $("#qsubmit").onclick=submitQuiz;
+}
+function submitQuiz(){
+  var blanks=0;
+  QUIZ.forEach(function(it,i){ if(!String(getVal(it,"q"+i)).trim()) blanks++; });
+  if(blanks&&!Q.warned){
+    Q.warned=true;
+    $("#qmsg").innerHTML='<p class="warn">還有 '+blanks+' 題沒有作答。再按一次「交卷」就會直接批改。</p>';
+    $("#qsubmit").textContent="仍要交卷";
+    return;
+  }
+  var correct=0, wrongNums=[];
+  QUIZ.forEach(function(it,i){
+    var val=getVal(it,"q"+i), blank=!String(val).trim(), right=!blank&&isRight(it,val);
+    if(right) correct++; else wrongNums.push(i+1);
+    lockAndMark(it,"q"+i,right,val);
+    var card=$("#qc"+i); card.classList.add(right?"ok":"bad");
+    $(".rv",card).innerHTML=fbHTML(it,right,blank);
+  });
+  var pts=correct*5, msg=pts>=90?"非常穩，過去式的觀念很扎實。":pts>=70?"不錯，把錯的題目解析看一遍就更好了。":"還需要加強，回到速查表和練習再複習一次，然後重做小考。";
+  var intro=$("#qintro");
+  intro.innerHTML='<h2>成績</h2><div class="score">'+pts+'<small> / 100</small></div><p>答對 '+correct+' / '+QUIZ.length+' 題。'+msg+'</p>'+
+    (wrongNums.length?'<p>需要檢討的題號：<b>'+wrongNums.join("、")+'</b>（往下看每題的解析）</p>':'')+
+    '<div class="actions"><button class="btn" id="qretry">重做小考</button><button class="btn ghost" id="qrules">回速查表</button></div>';
+  $("#qretry").onclick=function(){renderQuiz();window.scrollTo(0,0)};
+  $("#qrules").onclick=function(){show("rules")};
+  var sub=$("#qsubmit"); if(sub) sub.closest(".card").remove();
+  Q.submitted=true;
+  window.scrollTo(0,0);
+}
+renderQuiz();
+
+show((location.hash||"").replace("#",""));
+})();
+</script>
+
+</body></html>
